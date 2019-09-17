@@ -19,11 +19,15 @@ protected:
 	U32 mSimulationSampleRateHz;
 
 protected:
-	void CreateSerialByte();
+	void AGC_PulseWrite();
+	void AdressWrite();
+	void NotAdressWrite();
+	void CommandWrite();
+	void NotCommandWrite();
 	std::string mSerialText;
 	U32 mStringIndex;
 
-	SimulationChannelDescriptor mSerialSimulationData;
+	SimulationChannelDescriptor mNECSimulationData;
 
 };
 #endif //NEC_SIMULATION_DATA_GENERATOR
