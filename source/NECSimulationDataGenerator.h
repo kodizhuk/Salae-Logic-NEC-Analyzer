@@ -19,13 +19,22 @@ protected:
 	U32 mSimulationSampleRateHz;
 
 protected:
+
+	U64 UsToSamples(U64 us);
+	U64 SamplesToUs(U64 samples);
+
+	void Delay(U64 ms);
 	void AGC_PulseWrite();
 	void AdressWrite();
 	void NotAdressWrite();
 	void CommandWrite();
 	void NotCommandWrite();
-	std::string mSerialText;
-	U32 mStringIndex;
+
+	void WriteBit(U8 bit);
+
+	U64 mT;
+	U8 mAdress;
+	U8 mData;
 
 	SimulationChannelDescriptor mNECSimulationData;
 
