@@ -3,21 +3,13 @@
 
 
 NECAnalyzerSettings::NECAnalyzerSettings()
-:	mInputChannel( UNDEFINED_CHANNEL ),
-	mBitRate( 9600 )
+:	mInputChannel( UNDEFINED_CHANNEL )
 {
 	mInputChannelInterface.reset( new AnalyzerSettingInterfaceChannel() );
 	mInputChannelInterface->SetTitleAndTooltip( "NEC", "Infrared NEC Analyzer" );
 	mInputChannelInterface->SetChannel( mInputChannel );
 
-	mBitRateInterface.reset( new AnalyzerSettingInterfaceInteger() );
-	mBitRateInterface->SetTitleAndTooltip( "deleted",  "aldo deleted" );
-	mBitRateInterface->SetMax( 6000000 );
-	mBitRateInterface->SetMin( 1 );
-	mBitRateInterface->SetInteger( mBitRate );
-
 	AddInterface( mInputChannelInterface.get() );
-	AddInterface( mBitRateInterface.get() );
 
 	AddExportOption( 0, "Export as text/csv file" );
 	AddExportExtension( 0, "text", "txt" );
@@ -34,7 +26,6 @@ NECAnalyzerSettings::~NECAnalyzerSettings()
 bool NECAnalyzerSettings::SetSettingsFromInterfaces()
 {
 	mInputChannel = mInputChannelInterface->GetChannel();
-	mBitRate = mBitRateInterface->GetInteger();
 
 	ClearChannels();
 	AddChannel( mInputChannel, "NEC Analyzer", true );
@@ -45,7 +36,6 @@ bool NECAnalyzerSettings::SetSettingsFromInterfaces()
 void NECAnalyzerSettings::UpdateInterfacesFromSettings()
 {
 	mInputChannelInterface->SetChannel( mInputChannel );
-	mBitRateInterface->SetInteger( mBitRate );
 }
 
 void NECAnalyzerSettings::LoadSettings( const char* settings )
@@ -54,7 +44,6 @@ void NECAnalyzerSettings::LoadSettings( const char* settings )
 	text_archive.SetString( settings );
 
 	text_archive >> mInputChannel;
-	text_archive >> mBitRate;
 
 	ClearChannels();
 	AddChannel( mInputChannel, "NEC Analyzer", true );
@@ -67,7 +56,6 @@ const char* NECAnalyzerSettings::SaveSettings()
 	SimpleArchive text_archive;
 
 	text_archive << mInputChannel;
-	text_archive << mBitRate;
 
 	return SetReturnString( text_archive.GetString() );
 }

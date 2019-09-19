@@ -32,12 +32,12 @@ void NECAnalyzer::WorkerThread()
 		mNEC->AdvanceToNextEdge();
 
 	//init parametrs
-	mTAGCMark = 9000;
+	mTAGCMark = 4500;
 	mTAGCSpace = 4500;
 	mTMark = 560;
 	mTSpace0 = 560;
 	mTSpace1 = 1690;
-	mTError = 50;
+	mTError = 100;
 	mSynchronised = false;
 
 	mBitsForNextByte.clear();
@@ -46,7 +46,6 @@ void NECAnalyzer::WorkerThread()
 	for( ; ; )
 	{
 		//find first AGC pulse
-		
 		mNEC->AdvanceToNextEdge();	//falling
 		if (mNEC->GetBitState() == BIT_LOW)
 		{
@@ -97,11 +96,15 @@ void NECAnalyzer::WorkerThread()
 				else
 				{
 					//error 
+					mSynchronised = false;
+					mBitsForNextByte.clear();
 				}
 			}
 			else
 			{
 				//error read data
+				mSynchronised = false;
+				mBitsForNextByte.clear();
 			}
 
 			if (mBitsForNextByte.size() == 8)
@@ -121,36 +124,13 @@ void NECAnalyzer::WorkerThread()
 				mResults->AddFrame(frame);
 				mResults->CommitResults();
 				ReportProgress(mNEC->GetSampleNumber());
+
+				frame_start_location = frame_end_location;
 			}
 		}
 
 		ReportProgress(mNEC->GetSampleNumber());
 		CheckIfThreadShouldExit();
-
-		//mNEC->AdvanceToNextEdge();
-		//
-		//if (mNEC->GetBitState() == BIT_LOW)
-		//	edge_location = mNEC->GetSampleNumber();
-		//else if (mNEC->GetBitState() == BIT_HIGH)
-		//{
-		//	sample_finish = mNEC->GetSampleNumber();
-		//	fin = 1;
-		//}
-		//
-		//if (fin == 1)
-		//{
-		//	Frame frame;
-		//	frame.mStartingSampleInclusive = edge_location;
-		//	frame.mEndingSampleInclusive = sample_finish;
-		//	frame.mData1 = 0x12;
-		//	mResults->AddFrame(frame);
-		//	//mResults->AddMarker(edge_location, AnalyzerResults::Start, mSettings->mInputChannel);
-		//	//mResults->AddMarker(sample_finish, AnalyzerResults::Stop, mSettings->mInputChannel);
-		//	mResults->CommitResults();
-		//	ReportProgress(mNEC->GetSampleNumber());
-		//	fin = 0;
-		//}
-
 	}
 }
 

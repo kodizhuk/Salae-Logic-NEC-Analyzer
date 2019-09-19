@@ -41,7 +41,7 @@ protected: //vars
 	U32 mTSpace1;
 	U32 mTError;
 	bool mSynchronised;
-	std::vector<U64> mBitsForNextByte; //value, location
+	std::vector<bool> mBitsForNextByte; //value
 };
 
 extern "C" ANALYZER_EXPORT const char* __cdecl GetAnalyzerName();
