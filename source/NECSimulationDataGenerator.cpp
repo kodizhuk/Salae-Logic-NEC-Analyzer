@@ -4,7 +4,7 @@
 #include <AnalyzerHelpers.h>
 
 NECSimulationDataGenerator::NECSimulationDataGenerator()
-	:mAdress(0x12),
+	:mAdress(0x0f),
 	mData(0x87)
 {
 }
@@ -96,6 +96,9 @@ void NECSimulationDataGenerator::NotCommandWrite()
 	U8 data = ~mData;
 	for (U32 i = 0; i < 8; ++i)
 		WriteBit((data >> i) & 0x01);
+	mNECSimulationData.TransitionIfNeeded(BIT_LOW);
+	mNECSimulationData.Advance(U32(mT * 56));
+	mNECSimulationData.TransitionIfNeeded(BIT_HIGH);
 }
 
 void NECSimulationDataGenerator::WriteBit(U8 bit)
