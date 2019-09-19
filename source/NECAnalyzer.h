@@ -22,17 +22,26 @@ public:
 	virtual bool NeedsRerun();
 
 protected: //vars
+	U64 UsToSample(U64 us);
+	U64 SamplesToUs(U64 samples);
+
 	std::auto_ptr< NECAnalyzerSettings > mSettings;
 	std::auto_ptr< NECAnalyzerResults > mResults;
-	AnalyzerChannelData* mSerial;
+	AnalyzerChannelData* mNEC;
 
 	NECSimulationDataGenerator mSimulationDataGenerator;
 	bool mSimulationInitilized;
 
-	//Serial analysis vars:
+	//NEC analysis vars:
 	U32 mSampleRateHz;
-	U32 mStartOfStopBitOffset;
-	U32 mEndOfStopBitOffset;
+	U32 mTAGCMark;
+	U32 mTAGCSpace;
+	U32 mTMark;
+	U32 mTSpace0;
+	U32 mTSpace1;
+	U32 mTError;
+	bool mSynchronised;
+	std::vector<U64> mBitsForNextByte; //value, location
 };
 
 extern "C" ANALYZER_EXPORT const char* __cdecl GetAnalyzerName();

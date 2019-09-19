@@ -26,50 +26,142 @@ void NECAnalyzer::WorkerThread()
 {
 	mSampleRateHz = GetSampleRate();
 
-	mSerial = GetAnalyzerChannelData( mSettings->mInputChannel );
+	mNEC = GetAnalyzerChannelData( mSettings->mInputChannel );
 
-	if( mSerial->GetBitState() == BIT_LOW )
-		mSerial->AdvanceToNextEdge();
+	if( mNEC->GetBitState() == BIT_LOW )
+		mNEC->AdvanceToNextEdge();
 
-	U32 samples_per_bit = mSampleRateHz / mSettings->mBitRate;
-	U32 samples_to_first_center_of_first_data_bit = U32( 1.5 * double( mSampleRateHz ) / double( mSettings->mBitRate ) );
+	//init parametrs
+	mTAGCMark = 9000;
+	mTAGCSpace = 4500;
+	mTMark = 560;
+	mTSpace0 = 560;
+	mTSpace1 = 1690;
+	mTError = 50;
+	mSynchronised = false;
 
+	mBitsForNextByte.clear();
+
+	U64 edge_location = 0, frame_start_location, frame_end_location;
 	for( ; ; )
 	{
-		U8 data = 0;
-		U8 mask = 1 << 7;
+		//find first AGC pulse
 		
-		mSerial->AdvanceToNextEdge(); //falling edge -- beginning of the start bit
-
-		U64 starting_sample = mSerial->GetSampleNumber();
-
-		mSerial->Advance( samples_to_first_center_of_first_data_bit );
-
-		for( U32 i=0; i<8; i++ )
+		mNEC->AdvanceToNextEdge();	//falling
+		if (mNEC->GetBitState() == BIT_LOW)
 		{
-			//let's put a dot exactly where we sample this bit:
-			mResults->AddMarker( mSerial->GetSampleNumber(), AnalyzerResults::Dot, mSettings->mInputChannel );
-
-			if( mSerial->GetBitState() == BIT_HIGH )
-				data |= mask;
-
-			mSerial->Advance( samples_per_bit );
-
-			mask = mask >> 1;
+			edge_location = mNEC->GetSampleNumber();
 		}
 
+		U64 next_edge_location = mNEC->GetSampleOfNextEdge();
+		U64 edge_distance = next_edge_location - edge_location;
+		if ((edge_distance < UsToSample((U64)mTAGCMark + mTError)) && (edge_distance > UsToSample(mTAGCMark - mTError)))
+		{
+			mNEC->AdvanceToNextEdge();	//rising
 
-		//we have a byte to save. 
-		Frame frame;
-		frame.mData1 = data;
-		frame.mFlags = 0;
-		frame.mStartingSampleInclusive = starting_sample;
-		frame.mEndingSampleInclusive = mSerial->GetSampleNumber();
+			next_edge_location = mNEC->GetSampleOfNextEdge();
+			edge_distance = next_edge_location - edge_location;
+			if ((edge_distance < UsToSample((U64)mTAGCMark + mTAGCSpace + mTError))
+				&& (edge_distance > UsToSample((U64)mTAGCMark + mTAGCSpace - mTError)))
+			{
+				mSynchronised = true;
+				frame_start_location = next_edge_location;
+				mResults->AddMarker(edge_location, AnalyzerResults::Start, mSettings->mInputChannel);
+				mResults->AddMarker(next_edge_location, AnalyzerResults::Stop, mSettings->mInputChannel);
+				mResults->CommitResults();
+				ReportProgress(mNEC->GetSampleNumber());
+			}
+		}
+		//receive adress
+		//receive command
+		while (mSynchronised == true)
+		{
+			CheckIfThreadShouldExit();
+			mNEC->AdvanceToNextEdge();
 
-		mResults->AddFrame( frame );
-		mResults->CommitResults();
-		ReportProgress( frame.mEndingSampleInclusive );
+			edge_location = mNEC->GetSampleNumber();
+			next_edge_location = mNEC->GetSampleOfNextEdge();
+			edge_distance = next_edge_location - edge_location;
+			//find mark
+			if ((edge_distance < UsToSample((U64)mTMark + mTError)) && (edge_distance > UsToSample(mTMark - mTError)))
+			{
+				//find space
+				mNEC->AdvanceToNextEdge();
+				edge_location = mNEC->GetSampleNumber();
+				next_edge_location = mNEC->GetSampleOfNextEdge();
+				edge_distance = next_edge_location - edge_location;
+				if ((edge_distance < UsToSample((U64)mTSpace0 + mTError)) && (edge_distance > UsToSample(mTSpace0 - mTError)))
+					mBitsForNextByte.push_back(0);
+				else if ((edge_distance < UsToSample((U64)mTSpace1 + mTError)) && (edge_distance > UsToSample(mTSpace1 - mTError)))
+					mBitsForNextByte.push_back(1);
+				else
+				{
+					//error 
+				}
+			}
+			else
+			{
+				//error read data
+			}
+
+			if (mBitsForNextByte.size() == 8)
+			{
+				//finish read adress, push data to frame
+				frame_end_location = next_edge_location;
+
+				U64 byte = 0;
+				for (U32 i = 0; i < 8; ++i)
+					byte |= (mBitsForNextByte[i] << i);
+				mBitsForNextByte.clear();
+
+				Frame frame;
+				frame.mStartingSampleInclusive = frame_start_location;
+				frame.mEndingSampleInclusive = frame_end_location;
+				frame.mData1 = byte;
+				mResults->AddFrame(frame);
+				mResults->CommitResults();
+				ReportProgress(mNEC->GetSampleNumber());
+			}
+		}
+
+		ReportProgress(mNEC->GetSampleNumber());
+		CheckIfThreadShouldExit();
+
+		//mNEC->AdvanceToNextEdge();
+		//
+		//if (mNEC->GetBitState() == BIT_LOW)
+		//	edge_location = mNEC->GetSampleNumber();
+		//else if (mNEC->GetBitState() == BIT_HIGH)
+		//{
+		//	sample_finish = mNEC->GetSampleNumber();
+		//	fin = 1;
+		//}
+		//
+		//if (fin == 1)
+		//{
+		//	Frame frame;
+		//	frame.mStartingSampleInclusive = edge_location;
+		//	frame.mEndingSampleInclusive = sample_finish;
+		//	frame.mData1 = 0x12;
+		//	mResults->AddFrame(frame);
+		//	//mResults->AddMarker(edge_location, AnalyzerResults::Start, mSettings->mInputChannel);
+		//	//mResults->AddMarker(sample_finish, AnalyzerResults::Stop, mSettings->mInputChannel);
+		//	mResults->CommitResults();
+		//	ReportProgress(mNEC->GetSampleNumber());
+		//	fin = 0;
+		//}
+
 	}
+}
+
+U64 NECAnalyzer::UsToSample(U64 us)
+{
+	return (mSampleRateHz * us) / 1000000;
+}
+
+U64 NECAnalyzer::SamplesToUs(U64 samples)
+{
+	return(samples * 1000000) / mSampleRateHz;
 }
 
 bool NECAnalyzer::NeedsRerun()
@@ -90,7 +182,7 @@ U32 NECAnalyzer::GenerateSimulationData( U64 minimum_sample_index, U32 device_sa
 
 U32 NECAnalyzer::GetMinimumSampleRateHz()
 {
-	return mSettings->mBitRate * 4;
+	return 3500;	//3.5kHz
 }
 
 const char* NECAnalyzer::GetAnalyzerName() const
