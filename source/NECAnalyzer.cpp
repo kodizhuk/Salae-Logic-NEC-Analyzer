@@ -32,11 +32,11 @@ void NECAnalyzer::WorkerThread()
 		mNEC->AdvanceToNextEdge();
 
 	//init parametrs
-	mTAGCMark = 4500;
-	mTAGCSpace = 4500;
-	mTMark = 560;
-	mTSpace0 = 560;
-	mTSpace1 = 1690;
+	mTAGCMark = mSettings->mPreTimeMark;
+	mTAGCSpace = mSettings->mPreTimeSpace;
+	mTMark = mSettings->mMark;
+	mTSpace0 = mSettings->mZeroSpace;
+	mTSpace1 = mSettings->mOneSpace;
 	mTError = 100;
 	mSynchronised = false;
 
