@@ -1,20 +1,42 @@
 ﻿cl : Command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
   NECSimulationDataGenerator.cpp
   NECAnalyzerSettings.cpp
-  NECAnalyzerResults.cpp
-C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(25): warning C4251: 'NECAnalyzer::mSettings': class 'std::auto_ptr<NECAnalyzerSettings>' needs to have dll-interface to be used by clients of class 'NECAnalyzer'
-  C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(25): note: see declaration of 'std::auto_ptr<NECAnalyzerSettings>'
-C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(26): warning C4251: 'NECAnalyzer::mResults': class 'std::auto_ptr<NECAnalyzerResults>' needs to have dll-interface to be used by clients of class 'NECAnalyzer'
-  C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(26): note: see declaration of 'std::auto_ptr<NECAnalyzerResults>'
-C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(29): warning C4251: 'NECAnalyzer::mSimulationDataGenerator': class 'NECSimulationDataGenerator' needs to have dll-interface to be used by clients of class 'NECAnalyzer'
-  C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECSimulationDataGenerator.h(8): note: see declaration of 'NECSimulationDataGenerator'
   NECAnalyzer.cpp
-C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(25): warning C4251: 'NECAnalyzer::mSettings': class 'std::auto_ptr<NECAnalyzerSettings>' needs to have dll-interface to be used by clients of class 'NECAnalyzer'
-  C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(25): note: see declaration of 'std::auto_ptr<NECAnalyzerSettings>'
-C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(26): warning C4251: 'NECAnalyzer::mResults': class 'std::auto_ptr<NECAnalyzerResults>' needs to have dll-interface to be used by clients of class 'NECAnalyzer'
-  C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(26): note: see declaration of 'std::auto_ptr<NECAnalyzerResults>'
-C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(29): warning C4251: 'NECAnalyzer::mSimulationDataGenerator': class 'NECSimulationDataGenerator' needs to have dll-interface to be used by clients of class 'NECAnalyzer'
+C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(28): warning C4251: 'NECAnalyzer::mSettings': class 'std::auto_ptr<NECAnalyzerSettings>' needs to have dll-interface to be used by clients of class 'NECAnalyzer'
+  C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(28): note: see declaration of 'std::auto_ptr<NECAnalyzerSettings>'
+C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(29): warning C4251: 'NECAnalyzer::mResults': class 'std::auto_ptr<NECAnalyzerResults>' needs to have dll-interface to be used by clients of class 'NECAnalyzer'
+  C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(29): note: see declaration of 'std::auto_ptr<NECAnalyzerResults>'
+C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(32): warning C4251: 'NECAnalyzer::mSimulationDataGenerator': class 'NECSimulationDataGenerator' needs to have dll-interface to be used by clients of class 'NECAnalyzer'
   C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECSimulationDataGenerator.h(8): note: see declaration of 'NECSimulationDataGenerator'
+C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(44): warning C4251: 'NECAnalyzer::mBitsForNextByte': class 'std::vector<bool,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'NECAnalyzer'
+          with
+          [
+              _Ty=bool
+          ]
+  C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(44): note: see declaration of 'std::vector<bool,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=bool
+          ]
+  Generating Code...
+  Compiling...
+  NECAnalyzerResults.cpp
+C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(28): warning C4251: 'NECAnalyzer::mSettings': class 'std::auto_ptr<NECAnalyzerSettings>' needs to have dll-interface to be used by clients of class 'NECAnalyzer'
+  C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(28): note: see declaration of 'std::auto_ptr<NECAnalyzerSettings>'
+C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(29): warning C4251: 'NECAnalyzer::mResults': class 'std::auto_ptr<NECAnalyzerResults>' needs to have dll-interface to be used by clients of class 'NECAnalyzer'
+  C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(29): note: see declaration of 'std::auto_ptr<NECAnalyzerResults>'
+C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(32): warning C4251: 'NECAnalyzer::mSimulationDataGenerator': class 'NECSimulationDataGenerator' needs to have dll-interface to be used by clients of class 'NECAnalyzer'
+  C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECSimulationDataGenerator.h(8): note: see declaration of 'NECSimulationDataGenerator'
+C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(44): warning C4251: 'NECAnalyzer::mBitsForNextByte': class 'std::vector<bool,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'NECAnalyzer'
+          with
+          [
+              _Ty=bool
+          ]
+  C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Source\NECAnalyzer.h(44): note: see declaration of 'std::vector<bool,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=bool
+          ]
   Generating Code...
 NECAnalyzer.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
      Creating library C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Visual Studio\Win32\Debug\NECAnalyzer.lib and object C:\Users\kodizhuk\Desktop\salae\nec_analyzer\Visual Studio\Win32\Debug\NECAnalyzer.exp
