@@ -4,12 +4,12 @@ Saleae Logic Analyzer for the NEC IR-Remote Protocol.
 
 * add protocol to your Salae Logic:<br>
 for x64: <br>
-copy '\Binaries\x64\NECAnalyzer.dll' to '\Program Files\Saleae Inc\Analyzers'<br>
+copy `\Binaries\x64\NECAnalyzer.dll` to `\Program Files\Saleae Inc\Analyzers`<br>
 for x86: <br>
-copy '\Binaries\x86\NECAnalyzer.dll' to '\Program Files\Saleae Inc\Analyzers'<br>
+copy `\Binaries\x86\NECAnalyzer.dll` to `\Program Files\Saleae Inc\Analyzers`<br>
 and restart Salae Logic Software
 * changing protocol:<br>
-open MS Visio project '\VisualStudio\NECAnalyzer.sln'
+open MS Visio project `\VisualStudio\NECAnalyzer.sln`
 
 * Saleae: https://www.saleae.com
 * Saleae Logic: https://www.saleae.com/downloads
