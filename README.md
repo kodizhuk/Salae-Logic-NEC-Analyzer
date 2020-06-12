@@ -16,7 +16,7 @@ open MS Visio project `\VisualStudio\NECAnalyzer.sln`
 * Analyzer SDK: https://support.saleae.com/saleae-api-and-sdk/protocol-analyzer-sdk
 
 ## NEC Protocol Description
-Standart NEC protocol consist of preambule (AGC pulse), adress, inverted adress, command and inverted command.
+Standard NEC protocol consists of a preamble (AGC pulse), address, inverted address, command and inverted command.
 ![](./Screenshots/NECMessageFrame.png)
 
 Standart timings are:<br>
@@ -27,10 +27,10 @@ Space for One - 1.6ms<br>
 Space for Zero - 560us<br>
 ![](./Screenshots/NECBitsTiming.png)
 
-But there is many modification of this protocol. Each company change timings for itself. For this reason there is settings for timings of protocol.
+But there are many modifications of this protocol. Each company changes timings for itself. For this reason there are settings for timings of protocol.
 ![](./Screenshots/ProtocolSettings.png)
 
-Protocol Simulation use standart timings for NEC protocol.
+Protocol Simulation use standard timings for NEC protocol.
 ![](./Screenshots/ProtocolSimulation.png)
 
 Based on Salae Protocol Analyzer SDK version: 1.2.17
